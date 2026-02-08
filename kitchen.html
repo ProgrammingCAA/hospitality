@@ -4,11 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>شاشة المطبخ</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 <style>
   body { background:#221510; color:white }
 </style>
 </head>
+<!-- Firebase SDK -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, onValue, remove } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
+  authDomain: "hospitality-43fca.firebaseapp.com",
+  databaseURL: "https://hospitality-43fca-default-rtdb.firebaseio.com",
+  projectId: "hospitality-43fca",
+  storageBucket: "hospitality-43fca.firebasestorage.app",
+  messagingSenderId: "1065891444452",
+  appId: "1:1065891444452:web:8c5661e66e186ede115ef1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.db = db;
+window.ref = ref;
+window.push = push;
+window.onValue = onValue;
+window.remove = remove;
+
+</script>
 
 <body class="min-h-screen p-6">
 
@@ -16,54 +45,6 @@
 
 <div id="orders" class="grid md:grid-cols-3 gap-4"></div>
 
-<script>
-// عرض الطلبات
-function loadOrders() {
-  const container = document.getElementById("orders");
-  container.innerHTML = "";
-
-  const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-  if (orders.length === 0) {
-    container.innerHTML = `<p class="text-center col-span-full text-white/50">
-      لا توجد طلبات حالياً
-    </p>`;
-    return;
-  }
-
-  orders.forEach((order, index) => {
-    const card = document.createElement("div");
-    card.className = "bg-[#2d1e1a] p-4 rounded shadow";
-
-    card.innerHTML = `
-      <h3 class="text-lg font-bold mb-2">${order.drink}</h3>
-      <p class="text-sm">سكر: ${order.sugar || "بدون"}</p>
-      <p class="text-sm">حليب: ${order.milk || "بدون"}</p>
-      <p class="text-sm">ملاحظات: ${order.notes || "-"}</p>
-      <p class="text-xs text-white/50 mt-2">${order.time}</p>
-
-      <button onclick="completeOrder(${index})"
-        class="mt-4 w-full bg-green-600 py-2 rounded font-bold">
-        تم التنفيذ
-      </button>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
-// حذف الطلب بعد التنفيذ
-function completeOrder(index) {
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-  orders.splice(index, 1);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  loadOrders();
-}
-
-// تحديث تلقائي كل 2 ثانية
-setInterval(loadOrders, 2000);
-loadOrders();
-</script>
-
+<script src="kitchen.js"></script>
 </body>
 </html>

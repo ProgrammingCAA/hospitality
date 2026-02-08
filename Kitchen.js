@@ -1,44 +1,37 @@
-function loadOrders() {
-  const container = document.getElementById("orders");
-  container.innerHTML = "";
+const container=document.getElementById("orders");
 
-  const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+onValue(ref(db,"orders"),snapshot=>{
+  container.innerHTML="";
 
-  if (orders.length === 0) {
-    container.innerHTML = `<p class="text-center col-span-full text-white/50">
-      لا توجد طلبات حالياً
-    </p>`;
+  if(!snapshot.exists()){
+    container.innerHTML="<p>لا توجد طلبات</p>";
     return;
   }
 
-  orders.forEach((order, index) => {
-    const card = document.createElement("div");
-    card.className = "bg-[#2d1e1a] p-4 rounded shadow";
+  const data=snapshot.val();
 
-    card.innerHTML = `
-      <h3 class="text-lg font-bold mb-2">${order.drink}</h3>
-      <p class="text-sm">سكر: ${order.sugar || "بدون"}</p>
-      <p class="text-sm">حليب: ${order.milk || "بدون"}</p>
-      <p class="text-sm">ملاحظات: ${order.notes || "-"}</p>
-      <p class="text-xs text-white/50 mt-2">${order.time}</p>
+  Object.entries(data).forEach(([key,order])=>{
 
-      <button onclick="completeOrder(${index})"
-        class="mt-4 w-full bg-green-600 py-2 rounded font-bold">
-        تم التنفيذ
+    const card=document.createElement("div");
+    card.className="bg-[#2d1e1a] p-4 rounded";
+
+    card.innerHTML=`
+      <h3>${order.drink}</h3>
+      <p>سكر: ${order.sugar||"بدون"}</p>
+      <p>حليب: ${order.milk||"بدون"}</p>
+      <p>${order.notes||""}</p>
+      <p>${order.time}</p>
+
+      <button onclick="done('${key}')"
+      class="bg-green-600 w-full mt-2 py-2 rounded">
+      تم التنفيذ
       </button>
     `;
 
     container.appendChild(card);
   });
-}
+});
 
-function completeOrder(index) {
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-  orders.splice(index, 1);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  loadOrders();
-}
-
-// تحديث تلقائي كل 2 ثانية
-setInterval(loadOrders, 2000);
-loadOrders();
+window.done=(key)=>{
+  remove(ref(db,"orders/"+key));
+};
