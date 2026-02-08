@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طلب الضيافة</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.active{
+  background-color:#ea580c !important;
+  color:white !important;
+}
+button:hover{
+  opacity:0.9;
+}
+</style>
+</head>
+
+<body class="bg-[#221510] text-white min-h-screen p-6">
+
+<h1 class="text-2xl font-bold text-center mb-6">☕ طلب الضيافة</h1>
+
+<input id="table" type="text" placeholder="رقم الطاولة"
+class="w-full p-3 rounded text-black mb-4">
+
+<div class="grid grid-cols-2 gap-4 mb-6">
+  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة عربية">قهوة عربية</button>
+  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="شاي">شاي</button>
+  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة سوداء">قهوة سوداء</button>
+  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="مياه">مياه</button>
+</div>
+
+<p>السكر</p>
+<div class="flex gap-2 mb-4">
+  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
+  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="وسط">وسط</button>
+  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="زيادة">زيادة</button>
+</div>
+
+<p>الحليب</p>
+<div class="flex gap-2 mb-4">
+  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
+  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="قليل">قليل</button>
+  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="كثير">كثير</button>
+</div>
+
+<textarea id="notes" placeholder="ملاحظات"
+class="w-full p-3 rounded text-black mb-4"></textarea>
+
+<button id="send"
+class="w-full bg-orange-600 py-3 rounded text-lg font-bold">
+إرسال الطلب
+</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// إعداد Firebase
+const firebaseConfig = {
+  apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
+  authDomain:"hospitality-43fca.firebaseapp.com",
+  databaseURL:"https://hospitality-43fca-default-rtdb.firebaseio.com",
+  projectId:"hospitality-43fca",
+  storageBucket:"hospitality-43fca.firebasestorage.app",
+  messagingSenderId:"1065891444452",
+  appId:"1:1065891444452:web:8c5661e66e186ede115ef1"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// قراءة رقم الطاولة من URL (QR Code)
+const urlParams = new URLSearchParams(window.location.search);
+const tableParam = urlParams.get('table');
+if(tableParam){
+  const tableInput = document.getElementById("table");
+  tableInput.value = tableParam;
+  tableInput.readOnly = true; // منع تعديل الرقم
+}
+
+// متغيرات الاختيارات
+let drink = "", sugar = "", milk = "";
+
+// اختيار المشروب
+document.querySelectorAll(".drink").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".drink").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    drink = btn.dataset.drink;
+  };
+});
+
+// السكر
+document.querySelectorAll(".sugar").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".sugar").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    sugar = btn.dataset.value;
+  };
+});
+
+// الحليب
+document.querySelectorAll(".milk").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".milk").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    milk = btn.dataset.value;
+  };
+});
+
+// إرسال الطلب
+document.getElementById("send").onclick=()=>{
+  const table = document.getElementById("table").value.trim();
+  const notes = document.getElementById("notes").value.trim();
+
+  if(!table){alert("ادخلي رقم الطاولة"); return;}
+  if(!drink){alert("اختاري مشروب"); return;}
+
+  push(ref(db,"orders"),{
+    table, drink, sugar, milk, notes, time: new Date().toLocaleTimeString()
+  });
+
+  // إعادة تهيئة الحقول
+  if(!tableParam){ // إذا الرقم جاء من QR لا نمسح الرقم
+    document.getElementById("table").value = "";
+  }
+  document.getElementById("notes").value = "";
+  document.querySelectorAll(".drink, .sugar, .milk").forEach(b=>b.classList.remove("active"));
+  drink = sugar = milk = "";
+
+  alert("✅ تم إرسال الطلب");
+};
+
+</script>
+</body>
+</html>
