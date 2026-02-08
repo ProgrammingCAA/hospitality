@@ -8,76 +8,110 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-  .active {
-    background-color: #ea580c !important;
-    color: white !important;
-  }
+.active{
+  background-color:#ea580c !important;
+  color:white !important;
+}
 </style>
 </head>
-<!-- Firebase SDK -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
-  authDomain: "hospitality-43fca.firebaseapp.com",
-  databaseURL: "https://hospitality-43fca-default-rtdb.firebaseio.com",
-  projectId: "hospitality-43fca",
-  storageBucket: "hospitality-43fca.firebasestorage.app",
-  messagingSenderId: "1065891444452",
-  appId: "1:1065891444452:web:8c5661e66e186ede115ef1"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-window.db = db;
-window.ref = ref;
-window.push = push;
-window.onValue = onValue;
-window.remove = remove;
-
-</script>
 
 <body class="bg-[#221510] text-white min-h-screen p-6">
 
 <h1 class="text-2xl font-bold text-center mb-6">☕ طلب الضيافة</h1>
 
-<input>رقم الطاولة:</input>
+<input id="table" type="text" placeholder="رقم الطاولة"
+class="w-full p-3 rounded text-black mb-4">
+
 <!-- المشروبات -->
 <div class="grid grid-cols-2 gap-4 mb-6">
-  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة عربية">قهوة عربية</button>
-  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="شاي أحمر">شاي أحمر</button>
-  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة سوداء">قهوة سوداء</button>
-  <button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="مياه">مياه</button>
+<button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة عربية">قهوة عربية</button>
+<button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="شاي">شاي</button>
+<button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="قهوة سوداء">قهوة سوداء</button>
+<button class="drink bg-[#2d1e1a] p-4 rounded" data-drink="مياه">مياه</button>
 </div>
 
-<!-- السكر -->
-<p class="mb-2">السكر</p>
+<p>السكر</p>
 <div class="flex gap-2 mb-4">
-  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
-  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="وسط">وسط</button>
-  <button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="زيادة">زيادة</button>
+<button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
+<button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="وسط">وسط</button>
+<button class="sugar bg-[#2d1e1a] px-4 py-2 rounded" data-value="زيادة">زيادة</button>
 </div>
 
-<!-- الحليب -->
-<p class="mb-2">الحليب</p>
+<p>الحليب</p>
 <div class="flex gap-2 mb-4">
-  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
-  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="قليل">قليل</button>
-  <button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="كثير">كثير</button>
+<button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="بدون">بدون</button>
+<button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="قليل">قليل</button>
+<button class="milk bg-[#2d1e1a] px-4 py-2 rounded" data-value="كثير">كثير</button>
 </div>
 
-<textarea id="notes" class="w-full p-3 rounded text-black mb-4" placeholder="ملاحظات"></textarea>
+<textarea id="notes" placeholder="ملاحظات"
+class="w-full p-3 rounded text-black mb-4"></textarea>
 
 <button id="send"
- class="w-full bg-orange-600 py-3 rounded text-lg font-bold">
+class="w-full bg-orange-600 py-3 rounded text-lg font-bold">
 إرسال الطلب
 </button>
 
-<script src="app.js"></script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+ apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
+ authDomain:"hospitality-43fca.firebaseapp.com",
+ databaseURL:"https://hospitality-43fca-default-rtdb.firebaseio.com",
+ projectId:"hospitality-43fca",
+ storageBucket:"hospitality-43fca.firebasestorage.app",
+ messagingSenderId:"1065891444452",
+ appId:"1:1065891444452:web:8c5661e66e186ede115ef1"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+let drink="",sugar="",milk="";
+
+document.querySelectorAll(".drink").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll(".drink").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  drink=b.dataset.drink;
+ };
+});
+
+document.querySelectorAll(".sugar").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll(".sugar").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  sugar=b.dataset.value;
+ };
+});
+
+document.querySelectorAll(".milk").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll(".milk").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  milk=b.dataset.value;
+ };
+});
+
+document.getElementById("send").onclick=()=>{
+ const table=document.getElementById("table").value;
+ const notes=document.getElementById("notes").value;
+
+ if(!drink){alert("اختاري مشروب");return;}
+
+ push(ref(db,"orders"),{
+  table,drink,sugar,milk,notes,
+  time:Date.now()
+ });
+
+ alert("تم الإرسال ✅");
+};
+
+</script>
+
 </body>
 </html>

@@ -3,48 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>شاشة المطبخ</title>
+<title>المطبخ</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-  body { background:#221510; color:white }
-</style>
 </head>
-<!-- Firebase SDK -->
+
+<body class="bg-black text-white p-6">
+
+<h1 class="text-3xl mb-6 text-center">👨‍🍳 شاشة المطبخ</h1>
+
+<div id="orders" class="grid gap-4"></div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } 
+import { getDatabase, ref, onValue, remove }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
-  authDomain: "hospitality-43fca.firebaseapp.com",
-  databaseURL: "https://hospitality-43fca-default-rtdb.firebaseio.com",
-  projectId: "hospitality-43fca",
-  storageBucket: "hospitality-43fca.firebasestorage.app",
-  messagingSenderId: "1065891444452",
-  appId: "1:1065891444452:web:8c5661e66e186ede115ef1"
+const firebaseConfig={
+ apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
+ authDomain:"hospitality-43fca.firebaseapp.com",
+ databaseURL:"https://hospitality-43fca-default-rtdb.firebaseio.com",
+ projectId:"hospitality-43fca",
+ storageBucket:"hospitality-43fca.firebasestorage.app",
+ messagingSenderId:"1065891444452",
+ appId:"1:1065891444452:web:8c5661e66e186ede115ef1"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
 
-window.db = db;
-window.ref = ref;
-window.push = push;
-window.onValue = onValue;
-window.remove = remove;
+const box=document.getElementById("orders");
+
+onValue(ref(db,"orders"),snap=>{
+ box.innerHTML="";
+ snap.forEach(s=>{
+  const o=s.val();
+
+  box.innerHTML+=`
+   <div class="bg-orange-700 p-4 rounded">
+    <h2>طاولة ${o.table}</h2>
+    <p>${o.drink}</p>
+    <p>سكر: ${o.sugar}</p>
+    <p>حليب: ${o.milk}</p>
+    <p>${o.notes||""}</p>
+
+    <button onclick="done('${s.key}')"
+    class="bg-green-600 px-3 py-1 mt-2 rounded">
+    تم
+    </button>
+   </div>`;
+ });
+});
+
+window.done=id=>{
+ remove(ref(db,"orders/"+id));
+};
 
 </script>
 
-<body class="min-h-screen p-6">
-
-<h1 class="text-2xl font-bold mb-6 text-center">🍽️ شاشة استلام الطلبات</h1>
-
-<div id="orders" class="grid md:grid-cols-3 gap-4"></div>
-
-<script src="kitchen.js"></script>
 </body>
 </html>
