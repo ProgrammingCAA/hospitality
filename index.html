@@ -22,6 +22,22 @@ body{
   background-position: center;
   background-attachment: fixed;
 }
+body{
+  margin:0;
+  min-height:100vh;
+  background: url("https://raw.githubusercontent.com/sheikha-khalifa/hospitality/main/bg.jpg") center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* طبقة تغميق زرقاء فوق الصورة */
+body::before{
+  content:"";
+  position: fixed;
+  inset:0;
+  background: rgba(5,20,60,0.75); /* أزرق غامق */
+  z-index:-1;
+}
 
 </style>
 
@@ -149,6 +165,7 @@ document.getElementById("send").onclick=()=>{
 
 </body>
 </html>
+
 
 
 
