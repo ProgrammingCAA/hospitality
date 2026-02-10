@@ -3,57 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hospitality Order</title>
+<title>Kitchen Screen</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
 <style>
-.active{
- background:#facc15 !important; /* أصفر للأزرار المختارة */
- color:black !important;
-}
-body {
-  background: linear-gradient(to bottom, #3b82f6, #ffffff); /* أزرق فاتح إلى أبيض */
+/* خلفية صورة */
+body{
+  background: url("imagges/bg.jpg") center fixed;
+  background-size: cover;
 }
 </style>
 </head>
-<body class="min-h-screen p-6 flex items-center justify-center">
 
-<div class="w-full max-w-md bg-blue-900 p-8 rounded-3xl shadow-2xl text-white">
-  <div class="flex justify-center mb-6">
-    <img src="caa_logo.png" class="h-20">
-  </div>
+<body class="min-h-screen p-6 flex flex-col items-center">
 
-  <h1 class="text-3xl font-bold text-center mb-8">Hospitality Order</h1>
+<!-- لوجو -->
+<div class="flex justify-center mb-6">
+  <img src="imagges/caa_logo.png" class="h-24">
+</div>
 
-  <p class="mb-2 text-lg font-semibold">Select Drink</p>
-  <div class="grid grid-cols-2 gap-4 mb-6">
-    <button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Arabic Coffee">Arabic Coffee</button>
-    <button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Tea">Tea</button>
-    <button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Black Coffee">Black Coffee</button>
-    <button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Water">Water</button>
-  </div>
+<h1 class="text-3xl font-bold mb-8 text-center text-blue-900">
+  Kitchen Orders
+</h1>
 
-  <p class="mb-2 text-lg font-semibold">Sugar</p>
-  <div class="flex gap-2 mb-4">
-    <button class="sugar bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="No Sugar">No Sugar</button>
-    <button class="sugar bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="Medium">Medium</button>
-    <button class="sugar bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="Extra">Extra</button>
-  </div>
-
-  <p class="mb-2 text-lg font-semibold">Milk</p>
-  <div class="flex gap-2 mb-4">
-    <button class="milk bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="No Milk">No Milk</button>
-    <button class="milk bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="Little">Little</button>
-    <button class="milk bg-white text-blue-900 px-4 py-2 rounded-xl shadow hover:scale-105 transition" data-value="More">More</button>
-  </div>
-
-  <textarea id="notes" placeholder="Notes" class="w-full p-3 rounded-xl text-black mb-4 shadow-inner" rows="3"></textarea>
-
-  <button id="send" class="w-full bg-yellow-400 text-black py-3 rounded-xl font-bold hover:bg-yellow-300 transition text-lg">Send Order</button>
+<!-- شبكة الطلبات -->
+<div id="orders"
+class="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
  apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
@@ -68,61 +48,58 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const params = new URLSearchParams(window.location.search);
-const tableNumber = params.get("table");
+const container = document.getElementById("orders");
 
-let selectedDrink = "", sugar = "", milk = "";
+onValue(ref(db,"orders"), snapshot => {
+  container.innerHTML = "";
 
-document.querySelectorAll(".drink").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".drink").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    selectedDrink = btn.dataset.drink;
-  };
-});
-
-document.querySelectorAll(".sugar").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".sugar").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    sugar = btn.dataset.value;
-  };
-});
-
-document.querySelectorAll(".milk").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".milk").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    milk = btn.dataset.value;
-  };
-});
-
-document.getElementById("send").onclick=()=>{
-  if(!selectedDrink){
-    alert("اختاري المشروب");
-    return;
-  }
-  if(!tableNumber){
-    alert("رقم الطاولة غير موجود!");
+  if(!snapshot.exists()){
+    container.innerHTML =
+      "<p class='text-center text-blue-900 font-bold text-xl'>لا توجد طلبات</p>";
     return;
   }
 
-  push(ref(db,"orders"),{
-    table: tableNumber,
-    drink: selectedDrink,
-    sugar,
-    milk,
-    notes: document.getElementById("notes").value,
-    time: new Date().toLocaleTimeString()
+  const data = snapshot.val();
+
+  Object.entries(data).forEach(([key, order]) => {
+
+    const card = document.createElement("div");
+
+    // كارد سماوي زجاجي
+    card.className =
+      "p-6 rounded-3xl shadow-2xl flex flex-col justify-between text-white border border-white/40";
+
+    card.style.background =
+      "rgba(126,180,214,0.85)";
+    card.style.backdropFilter = "blur(6px)";
+
+    card.innerHTML = `
+      <div class="flex flex-col items-center mb-4">
+        <div class="w-36 h-16 bg-blue-700/80 rounded-xl flex items-center justify-center font-bold text-white text-lg shadow">
+          Table ${order.table}
+        </div>
+      </div>
+
+      <p><b>Drink:</b> ${order.drink}</p>
+      <p><b>Sugar:</b> ${order.sugar || "-"}</p>
+      <p><b>Milk:</b> ${order.milk || "-"}</p>
+      <p class="mt-2">${order.notes || "-"}</p>
+      <p class="text-sm text-blue-900 font-semibold mt-1">${order.time}</p>
+
+      <button onclick="done('${key}')"
+      class="w-full mt-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-500 transition shadow-lg">
+      Completed
+      </button>
+    `;
+
+    container.appendChild(card);
   });
+});
 
-  alert("✅ تم إرسال الطلب");
-
-  document.querySelectorAll(".drink, .sugar, .milk").forEach(b=>b.classList.remove("active"));
-  selectedDrink = sugar = milk = "";
-  document.getElementById("notes").value = "";
+window.done = (key) => {
+  remove(ref(db,"orders/"+key));
 };
 </script>
+
 </body>
 </html>
-
