@@ -14,10 +14,15 @@
 
 /* خلفية صورة */
 body{
-  background: url("https://sheikha-khalifa.github.io/hospitality/bg.jpg") center center fixed;
+  background:
+    linear-gradient(rgba(10,30,80,0.7), rgba(10,30,80,0.7)),
+    url("https://raw.githubusercontent.com/sheikha-khalifa/hospitality/main/bg.jpg");
+    
   background-size: cover;
-  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
+
 </style>
 
 </head>
@@ -144,6 +149,7 @@ document.getElementById("send").onclick=()=>{
 
 </body>
 </html>
+
 
 
 
