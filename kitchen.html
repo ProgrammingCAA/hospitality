@@ -66,8 +66,8 @@ body{
 
       Object.entries(data).forEach(([key, order]) => {
 
-        // أي طلب للرئيس يظهر باسم "President Seat"
-        const seatLabel = order.isPresident ? "President Seat" : `Seat ${order.table}`;
+        // أي طلب للرئيس: الطاولة رقم 1 → "President Seat"
+        const seatLabel = order.table === 1 ? "President Seat" : `Seat ${order.table}`;
 
         const card = document.createElement("div");
         card.className =
