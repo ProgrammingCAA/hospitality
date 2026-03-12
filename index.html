@@ -45,7 +45,7 @@ body::before{
 
 <body class="min-h-screen p-6 flex items-center justify-center">
 
-<div class="w-full max-w-md p-8 rounded-3xl shadow-2xl text-white"
+<div class="w-full max-w-lg p-8 rounded-3xl shadow-2xl text-white"
      style="background-color:rgba(126,180,214,0.85); backdrop-filter: blur(6px);">
 
 
@@ -56,20 +56,71 @@ body::before{
   </div>
 
   <h1 class="text-3xl font-bold text-center mb-8">Hospitality Order</h1>
-<div class="grid grid-cols-2 gap-4 mb-6">
+<p class="text-xl font-semibold mb-3">Coffee</p>
 
-<button type="button" class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Black Coffee">Black Coffee</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Omani Coffee">Omani Coffee</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Peppermint">Peppermint</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Black Tea">Black Tea</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Green Tea">Green Tea</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Saatar Tea">Zaatar Tea</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Milk Tea">Milk Tea</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Cappuccino">Cappuccino</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Espresso">Espresso</button>
-<button class="drink bg-white text-blue-900 p-4 rounded-xl shadow hover:scale-105 transition" data-drink="Water">Water</button>
+<div class="grid grid-cols-3 gap-4 mb-6">
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Black Coffee">
+<img src="https://img.icons8.com/?size=100&id=hCiex1L35nUt&format=png&color=000000" class="h-14 mb-2">
+<span class="text-sm font-semibold">Omani Coffee</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Black Coffee">
+<img src="https://img.icons8.com/color/96/coffee.png" class="h-14 mb-2">
+<span class="text-sm font-semibold">Black Coffee</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Cappuccino">
+<img src="https://img.icons8.com/?size=100&id=wluBCpywxUAY&format=png&color=000000" class="h-14 mb-2">
+<span class="text-sm font-semibold">Cappuccino</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Espresso">
+<img src="https://img.icons8.com/color/96/espresso-cup.png" class="h-14 mb-2">
+<span class="text-sm font-semibold">Espresso</span>
+</button>
+
+
 </div>
 
+
+<p class="text-xl font-semibold mb-3">Tea</p>
+
+<div class="grid grid-cols-3 gap-4 mb-6">
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Black Tea">
+<img src="https://img.icons8.com/color/96/tea.png" class="h-14 mb-2">
+<span class="text-sm font-semibold">Black Tea</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Green Tea">
+<img src="https://img.icons8.com/color/96/green-tea.png" class="h-14 mb-2">
+<span class="text-sm font-semibold">Green Tea</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Milk Tea">
+<img src="https://img.icons8.com/?size=100&id=49316&format=png&color=000000" class="h-14 mb-2">
+<span class="text-sm font-semibold">Milk Tea</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Peppermint">
+<img src="https://img.icons8.com/color/96/mint.png" class="h-14 mb-2">
+<span class="text-sm font-semibold">Peppermint</span>
+</button>
+
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Zaatar Tea">
+<img src="https://img.icons8.com/?size=100&id=Yg9w9dHxAt8V&format=png&color=000000" class="h-14 mb-2">
+<span class="text-sm font-semibold">Zaatar Tea</span>
+</button>
+
+</div>
+
+
+<p class="text-xl font-semibold mb-3">Other</p>
+<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Zaatar Tea">
+<img src="https://img.icons8.com/?size=100&id=13322&format=png&color=000000" class="h-14 mb-2">
+<span class="text-sm font-semibold">Water</span>
+</button>
 
 
   <p class="mb-2 text-lg font-semibold">Sugar</p>
@@ -167,8 +218,6 @@ document.getElementById("send").onclick=()=>{
 
 </body>
 </html>
-
-
 
 
 
