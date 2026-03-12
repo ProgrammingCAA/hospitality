@@ -11,6 +11,9 @@
   background:#1e2e1b !important;
   color:white !important;
 }
+#peppermintBtn{
+display:none;
+}
 
 /* خلفية صورة */
 body{
@@ -103,10 +106,16 @@ body::before{
 <span class="text-sm font-semibold">Milk Tea</span>
 </button>
 
-<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Peppermint">
-<img src="https://img.icons8.com/color/96/mint.png" class="h-14 mb-2">
+<button id="peppermintBtn"
+class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center"
+data-drink="Peppermint">
+
+<img src="https://cdn-icons-png.flaticon.com/512/590/590836.png" class="h-14 mb-2">
+
 <span class="text-sm font-semibold">Peppermint</span>
+
 </button>
+
 
 <button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Zaatar Tea">
 <img src="https://img.icons8.com/?size=100&id=Yg9w9dHxAt8V&format=png&color=000000" class="h-14 mb-2">
@@ -162,6 +171,11 @@ const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
+
+// اظهار Peppermint فقط للرئيس
+if(tableNumber === "president"){
+  document.getElementById("peppermintBtn").style.display = "flex";
+}
 
 let selectedDrink = "", sugar = "", milk = "";
 
