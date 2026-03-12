@@ -12,7 +12,6 @@ body{
   background:
     linear-gradient(rgba(10,30,80,0.7), rgba(10,30,80,0.7)),
     url("https://raw.githubusercontent.com/sheikha-khalifa/hospitality/main/bg.jpg");
-    
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -22,98 +21,87 @@ body{
 
 <body class="min-h-screen p-6 flex flex-col items-center">
 
-<!-- لوجو -->
+  <!-- لوجو -->
   <div class="flex justify-center mb-6">
     <img src="https://raw.githubusercontent.com/sheikha-khalifa/hospitality/main/caa_logo.png" class="h-35">
   </div>
 
-<h1 class="text-3xl font-bold mb-8 text-center text-blue-900">
-  Kitchen Orders
-</h1>
+  <h1 class="text-3xl font-bold mb-8 text-center text-blue-900">
+    Kitchen Orders
+  </h1>
 
-<!-- شبكة الطلبات -->
-<div id="orders"
-class="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-</div>
+  <!-- شبكة الطلبات -->
+  <div id="orders" class="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+  </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const firebaseConfig = {
- apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
- authDomain:"hospitality-43fca.firebaseapp.com",
- databaseURL:"https://hospitality-43fca-default-rtdb.firebaseio.com",
- projectId:"hospitality-43fca",
- storageBucket:"hospitality-43fca.firebasestorage.app",
- messagingSenderId:"1065891444452",
- appId:"1:1065891444452:web:8c5661e66e186ede115ef1"
-};
+    const firebaseConfig = {
+      apiKey:"AIzaSyCxOPyURMd40ee9XS-BudTELbJUjXyBUak",
+      authDomain:"hospitality-43fca.firebaseapp.com",
+      databaseURL:"https://hospitality-43fca-default-rtdb.firebaseio.com",
+      projectId:"hospitality-43fca",
+      storageBucket:"hospitality-43fca.firebasestorage.app",
+      messagingSenderId:"1065891444452",
+      appId:"1:1065891444452:web:8c5661e66e186ede115ef1"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-const container = document.getElementById("orders");
+    const container = document.getElementById("orders");
 
-onValue(ref(db,"orders"), snapshot => {
-  container.innerHTML = "";
+    onValue(ref(db,"orders"), snapshot => {
+      container.innerHTML = "";
 
-  if(!snapshot.exists()){
-    container.innerHTML =
-      "<p class='text-center text-blue-900 font-bold text-xl'>لا توجد طلبات</p>";
-    return;
-  }
+      if(!snapshot.exists()){
+        container.innerHTML =
+          "<p class='text-center text-blue-900 font-bold text-xl'>لا توجد طلبات</p>";
+        return;
+      }
 
-  const data = snapshot.val();
+      const data = snapshot.val();
 
-  Object.entries(data).forEach(([key, order]) => {
+      Object.entries(data).forEach(([key, order]) => {
 
-    const card = document.createElement("div");
+        // أي طلب للرئيس يظهر باسم "President Seat"
+        const seatLabel = order.isPresident ? "President Seat" : `Seat ${order.table}`;
 
-    // كارد سماوي زجاجي
-    card.className =
-      "p-6 rounded-3xl shadow-2xl flex flex-col justify-between text-white border border-white/40";
+        const card = document.createElement("div");
+        card.className =
+          "p-6 rounded-3xl shadow-2xl flex flex-col justify-between text-white border border-white/40";
+        card.style.background = "rgba(126,180,214,0.85)";
+        card.style.backdropFilter = "blur(6px)";
 
-    card.style.background =
-      "rgba(126,180,214,0.85)";
-    card.style.backdropFilter = "blur(6px)";
+        card.innerHTML = `
+          <div class="flex flex-col items-center mb-4">
+            <div class="w-36 h-16 bg-blue-700/80 rounded-xl flex items-center justify-center font-bold text-white text-lg shadow">
+              ${seatLabel}
+            </div>
+          </div>
 
-    card.innerHTML = `
-      <div class="flex flex-col items-center mb-4">
-        <div class="w-36 h-16 bg-blue-700/80 rounded-xl flex items-center justify-center font-bold text-white text-lg shadow">
-       Seat ${order.table} 
+          <p><b>Drink:</b> ${order.drink}</p>
+          <p><b>Sugar:</b> ${order.sugar || "-"}</p>
+          <p><b>Milk:</b> ${order.milk || "-"}</p>
+          <p class="mt-2">${order.notes || "-"}</p>
+          <p class="text-sm text-blue-900 font-semibold mt-1">${order.time}</p>
 
-        </div>
-      </div>
+          <button onclick="done('${key}')"
+            class="w-full mt-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-500 transition shadow-lg cursor-pointer active:scale-95">
+            Completed
+          </button>
+        `;
 
-      <p><b>Drink:</b> ${order.drink}</p>
-      <p><b>Sugar:</b> ${order.sugar || "-"}</p>
-      <p><b>Milk:</b> ${order.milk || "-"}</p>
-      <p class="mt-2">${order.notes || "-"}</p>
-      <p class="text-sm text-blue-900 font-semibold mt-1">${order.time}</p>
+        container.appendChild(card);
+      });
+    });
 
-      <button onclick="done('${key}')"
-      class="w-full mt-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-500 transition shadow-lg">
-      Completed
-      </button>
-    `;
-
-    container.appendChild(card);
-  });
-});
-
-window.done = (key) => {
-  remove(ref(db,"orders/"+key));
-};
-</script>
+    window.done = (key) => {
+      remove(ref(db,"orders/"+key));
+    };
+  </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
