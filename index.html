@@ -171,6 +171,7 @@ const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
+  
 // اظهار Peppermint فقط للرئيس
 if(tableNumber && tableNumber.toLowerCase() === "president"){
   document.getElementById("peppermintBtn").style.display = "flex";
