@@ -70,10 +70,19 @@ body{
 
         // ✅ إذا الرابط يحتوي president → يظهر President Seat
         //    وإلا يظهر رقم الطاولة الطبيعي من الطلب
-      const seatLabel =
-  order.table && order.table.toLowerCase() === "president"
-    ? " President Seat"
-    : `Seat ${order.table}`;
+     let seatLabel = `Seat ${order.table}`;
+
+if(order.table){
+  const t = order.table.toLowerCase();
+
+  if(t === "president"){
+    seatLabel = "👑 President Seat";
+  }
+
+  if(t === "presidentoffice"){
+    seatLabel = "👑 President Office";
+  }
+}
 
 
         const card = document.createElement("div");
