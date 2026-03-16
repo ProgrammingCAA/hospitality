@@ -173,9 +173,18 @@ const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
   
 // اظهار Peppermint فقط للرئيس
-if(tableNumber && tableNumber.toLowerCase() === "president"){
-  document.getElementById("peppermintBtn").style.display = "flex";
+const peppermintBtn = document.getElementById("peppermintBtn");
+
+if(tableNumber){
+  const t = tableNumber.toLowerCase();
+
+  if(t === "president" || t === "presidentoffice"){
+    peppermintBtn.style.display = "flex";
+  } else {
+    peppermintBtn.remove();
+  }
 }
+
 
 
 let selectedDrink = "", sugar = "", milk = "";
