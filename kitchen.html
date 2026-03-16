@@ -72,20 +72,24 @@ body{
         //    وإلا يظهر رقم الطاولة الطبيعي من الطلب
      let seatLabel = `Seat ${order.table}`;
 
+let seatLabel = `Seat ${order.table}`;
+
 if(order.table){
   const t = order.table.toLowerCase();
 
   if(t === "president"){
-    seatLabel = " President Seat";
+    seatLabel = "👑 President Seat";
   }
 
   if(t === "presidentoffice"){
-    seatLabel = " President Office";
+    seatLabel = "👑 President Office";
   }
-   if(t === "presidentofficeManager"){
-    seatLabel = " President Office Manager";
+
+  if(t === "presidentofficemanager"){
+    seatLabel = "👑 President Office Manager";
   }
 }
+
 
 
         const card = document.createElement("div");
