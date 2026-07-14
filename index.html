@@ -174,22 +174,30 @@ const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
-  
-// اظهار Peppermint فقط للرئيس
+  // التحكم في المشروبات الخاصة بالرئيس فقط
 const presidentButtons = document.querySelectorAll(".president-only");
+
 const isPresident =
     tableNumber &&
     (
-      tableNumber.toLowerCase() === "president" ||
-      tableNumber.toLowerCase() === "presidentoffice"
+        tableNumber.toLowerCase() === "president" ||
+        tableNumber.toLowerCase() === "presidentoffice"
     );
-// إذا كان الرئيس يظهر كل شيء
+
+
 if(isPresident){
 
+    // الرئيس يشوف كل المشروبات
     presidentButtons.forEach(btn=>{
+        btn.style.display = "flex";
+    });
 
-        btn.style.display="flex";
+}
+else{
 
+    // باقي المستخدمين لا يشوفون مشروبات الرئيس
+    presidentButtons.forEach(btn=>{
+        btn.remove();
     });
 
 }
