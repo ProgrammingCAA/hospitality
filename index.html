@@ -174,42 +174,59 @@ const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
   
 // اظهار Peppermint فقط للرئيس
-const peppermintBtn = document.getElementById("peppermintBtn");
-const blackCoffeeBtn = document.getElementById("BlackCoffeeBtn");
-const cappuccinoBtn = document.getElementById("Cappuccinobtn");
-const espressoBtn = document.getElementById("Espressobtn");
-const greenTeaBtn = document.getElementById("GreenTeabtn");
-const milkTeaBtn = document.getElementById("MilkTeabtn");
+const presidentButtons = document.querySelectorAll(".president-only");
+const isPresident =
+    tableNumber &&
+    (
+      tableNumber.toLowerCase() === "president" ||
+      tableNumber.toLowerCase() === "presidentoffice"
+    );
+// إذا كان الرئيس يظهر كل شيء
+if(isPresident){
 
-const presidentOnly = [
-    peppermintBtn,
-    blackCoffeeBtn,
-    cappuccinoBtn,
-    espressoBtn,
-    greenTeaBtn,
-    milkTeaBtn
-];
+    presidentButtons.forEach(btn=>{
 
-if (tableNumber) {
+        btn.style.display="flex";
 
-    const t = tableNumber.toLowerCase();
-
-    if (t === "president" || t === "presidentoffice") {
-
-        presidentOnly.forEach(btn=>{
-            if(btn) btn.style.display="flex";
-        });
-
-    } else {
-
-        presidentOnly.forEach(btn=>{
-            if(btn) btn.remove();
-        });
-
-    }
+    });
 
 }
 
+// const peppermintBtn = document.getElementById("peppermintBtn");
+//const blackCoffeeBtn = document.getElementById("BlackCoffeeBtn");
+//const cappuccinoBtn = document.getElementById("Cappuccinobtn");
+//const espressoBtn = document.getElementById("Espressobtn");
+//const greenTeaBtn = document.getElementById("GreenTeabtn");
+//const milkTeaBtn = document.getElementById("MilkTeabtn");
+
+//const presidentOnly = [
+//    peppermintBtn,
+//    blackCoffeeBtn,
+//    cappuccinoBtn,
+//    espressoBtn,
+//    greenTeaBtn,
+//    milkTeaBtn
+//];
+
+//if (tableNumber) {
+
+//    const t = tableNumber.toLowerCase();
+
+  //  if (t === "president" || t === "presidentoffice") {
+
+     //   presidentOnly.forEach(btn=>{
+      //      if(btn) btn.style.display="flex";
+      //  });
+
+ //   } else {
+
+  //      presidentOnly.forEach(btn=>{
+        //    if(btn) btn.remove();
+     //   });
+
+  //  }
+
+//}
 
 let selectedDrink = "", sugar = "", milk = "";
 
