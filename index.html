@@ -175,41 +175,38 @@ const tableNumber = params.get("table");
   
 // اظهار Peppermint فقط للرئيس
 const peppermintBtn = document.getElementById("peppermintBtn");
-const peppermintBtn = document.getElementById("Black Coffeebtn");
-  const peppermintBtn = document.getElementById("Cappuccinobtn");
-  const peppermintBtn = document.getElementById("GreenTeabtn");
-  const peppermintBtn = document.getElementById("GreenTeabtn");
-  const peppermintBtn = document.getElementById("MilkTeabtn");
-if(tableNumber){
-  const t = tableNumber.toLowerCase();
+const blackCoffeeBtn = document.getElementById("BlackCoffeeBtn");
+const cappuccinoBtn = document.getElementById("Cappuccinobtn");
+const greenTeaBtn = document.getElementById("GreenTeabtn");
+const milkTeaBtn = document.getElementById("MilkTeabtn");
 
-  if(t === "president" || t === "presidentoffice"){
-    peppermintBtn.style.display = "flex";
-  } else {
-    peppermintBtn.remove();
-  }
-  else if((t === "president" || t === "presidentoffice"){
-    Black Coffeebtn.style.display = "flex";
-  } else {
-    Black Coffeebtn.remove();
-  }
-  else if((t === "president" || t === "presidentoffice"){
-  Cappuccinobtn.style.display = "flex";
-  } else {
-   Cappuccinobtn.remove();
-  }
-   else if((t === "president" || t === "presidentoffice"){
-  GreenTeabtn.style.display = "flex";
-  } else {
-   GreenTeabtn.remove();
-  }
-  else if((t === "president" || t === "presidentoffice"){
-  MilkTeabtn.style.display = "flex";
-  } else {
-   MilkTeabtn.remove();
-  }
+const presidentOnly = [
+    peppermintBtn,
+    blackCoffeeBtn,
+    cappuccinoBtn,
+    greenTeaBtn,
+    milkTeaBtn
+];
+
+if (tableNumber) {
+
+    const t = tableNumber.toLowerCase();
+
+    if (t === "president" || t === "presidentoffice") {
+
+        presidentOnly.forEach(btn=>{
+            if(btn) btn.style.display="flex";
+        });
+
+    } else {
+
+        presidentOnly.forEach(btn=>{
+            if(btn) btn.remove();
+        });
+
+    }
+
 }
-
 
 
 let selectedDrink = "", sugar = "", milk = "";
