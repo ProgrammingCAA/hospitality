@@ -12,13 +12,12 @@
   color:white !important;
 }
   .president-only{
-    display:none !important;
+    display:none;
 }
 
 .president-only.show{
-    display:flex !important;
+    display:flex;
 }
-
 /* خلفية صورة */
 body{
   background:
@@ -181,30 +180,33 @@ const tableNumber = params.get("table") || "";
 
 const presidentButtons = document.querySelectorAll(".president-only");
 
-const currentTable = tableNumber.trim().toLowerCase();
+const table = new URLSearchParams(window.location.search).get("table");
 
 const isPresident =
-    currentTable === "president" ||
-    currentTable === "presidentoffice";
+    table &&
+    (
+      table.toLowerCase() === "president" ||
+      table.toLowerCase() === "presidentoffice"
+    );
 
 
-console.log("Current Table:", currentTable);
-console.log("Is President:", isPresident);
+console.log("Table:", table);
+console.log("President:", isPresident);
 
 
-if(isPresident){
+presidentButtons.forEach(button => {
 
-    presidentButtons.forEach(button=>{
+    if(isPresident){
+
         button.classList.add("show");
-    });
 
-}else{
+    }else{
 
-    presidentButtons.forEach(button=>{
         button.classList.remove("show");
-    });
 
-}
+    }
+
+});
 // const peppermintBtn = document.getElementById("peppermintBtn");
 //const blackCoffeeBtn = document.getElementById("BlackCoffeeBtn");
 //const cappuccinoBtn = document.getElementById("Cappuccinobtn");
