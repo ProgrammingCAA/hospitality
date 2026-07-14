@@ -175,6 +175,7 @@ const db = getDatabase(app);
 const params = new URLSearchParams(window.location.search);
 const tableNumber = params.get("table");
   // التحكم في المشروبات الخاصة بالرئيس فقط
+// التحكم في المشروبات الخاصة بالرئيس فقط
 const presidentButtons = document.querySelectorAll(".president-only");
 
 const isPresident =
@@ -187,17 +188,16 @@ const isPresident =
 
 if(isPresident){
 
-    // الرئيس يشوف كل المشروبات
+    // الرئيس يشوف المشروبات الخاصة
     presidentButtons.forEach(btn=>{
         btn.style.display = "flex";
     });
 
-}
-else{
+}else{
 
-    // باقي المستخدمين لا يشوفون مشروبات الرئيس
+    // المستخدم العادي لا يشوفها
     presidentButtons.forEach(btn=>{
-        btn.remove();
+        btn.style.display = "none";
     });
 
 }
