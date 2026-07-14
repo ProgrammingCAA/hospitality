@@ -97,12 +97,12 @@ body::before{
 <span class="text-sm font-semibold">Black Tea</span>
 </button>
 
-<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Green Tea">
+<button id="GreenTeabtn" class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Green Tea">
 <img src="https://img.icons8.com/color/96/green-tea.png" class="h-14 mb-2">
 <span class="text-sm font-semibold">Green Tea</span>
 </button>
 
-<button class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center" data-drink="Milk Tea">
+<button id="MilkTeabtn" class="drink bg-white text-blue-900 p-3 rounded-xl shadow hover:scale-105 transition flex flex-col items-center data-drink="Milk Tea">
 <img src="https://img.icons8.com/?size=100&id=49316&format=png&color=000000" class="h-14 mb-2">
 <span class="text-sm font-semibold">Milk Tea</span>
 </button> 
@@ -175,11 +175,11 @@ const tableNumber = params.get("table");
   
 // اظهار Peppermint فقط للرئيس
 const peppermintBtn = document.getElementById("peppermintBtn");
-const peppermintBtn = document.getElementById("Black Coffee");
-  const peppermintBtn = document.getElementById("Cappuccino");
-  const peppermintBtn = document.getElementById("Green Tea");
-  const peppermintBtn = document.getElementById("Green Tea");
-  const peppermintBtn = document.getElementById("Milk Tea");
+const peppermintBtn = document.getElementById("Black Coffeebtn");
+  const peppermintBtn = document.getElementById("Cappuccinobtn");
+  const peppermintBtn = document.getElementById("GreenTeabtn");
+  const peppermintBtn = document.getElementById("GreenTeabtn");
+  const peppermintBtn = document.getElementById("MilkTeabtn");
 if(tableNumber){
   const t = tableNumber.toLowerCase();
 
@@ -187,6 +187,26 @@ if(tableNumber){
     peppermintBtn.style.display = "flex";
   } else {
     peppermintBtn.remove();
+  }
+  else if((t === "president" || t === "presidentoffice"){
+    Black Coffeebtn.style.display = "flex";
+  } else {
+    Black Coffeebtn.remove();
+  }
+  else if((t === "president" || t === "presidentoffice"){
+  Cappuccinobtn.style.display = "flex";
+  } else {
+   Cappuccinobtn.remove();
+  }
+   else if((t === "president" || t === "presidentoffice"){
+  GreenTeabtn.style.display = "flex";
+  } else {
+   GreenTeabtn.remove();
+  }
+  else if((t === "president" || t === "presidentoffice"){
+  MilkTeabtn.style.display = "flex";
+  } else {
+   MilkTeabtn.remove();
   }
 }
 
