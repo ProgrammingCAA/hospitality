@@ -177,25 +177,27 @@ const tableNumber = params.get("table") || "";
 
 const presidentButtons = document.querySelectorAll(".president-only");
 
-const isPresident = 
-    tableNumber.trim().toLowerCase() === "president" ||
-    tableNumber.trim().toLowerCase() === "presidentoffice";
+const currentTable = tableNumber.trim().toLowerCase();
+
+const isPresident =
+    currentTable === "president" ||
+    currentTable === "presidentoffice";
 
 
-console.log("President:", isPresident);
+console.log("Current Table:", currentTable);
+console.log("Is President:", isPresident);
 
 
-if (isPresident) {
+if(isPresident){
 
-    presidentButtons.forEach(btn => {
-        btn.classList.remove("hidden");
-        btn.style.display = "flex";
+    presidentButtons.forEach(button=>{
+        button.classList.add("show");
     });
 
-} else {
+}else{
 
-    presidentButtons.forEach(btn => {
-        btn.style.display = "none";
+    presidentButtons.forEach(button=>{
+        button.classList.remove("show");
     });
 
 }
