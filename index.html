@@ -173,30 +173,28 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
-const tableNumber = params.get("table");
-  // التحكم في المشروبات الخاصة بالرئيس فقط
-// التحكم في المشروبات الخاصة بالرئيس فقط
+const tableNumber = params.get("table") || "";
+
 const presidentButtons = document.querySelectorAll(".president-only");
 
-const isPresident =
-    tableNumber &&
-    (
-        tableNumber.toLowerCase() === "president" ||
-        tableNumber.toLowerCase() === "presidentoffice"
-    );
+const isPresident = 
+    tableNumber.trim().toLowerCase() === "president" ||
+    tableNumber.trim().toLowerCase() === "presidentoffice";
 
 
-if(isPresident){
+console.log("President:", isPresident);
 
-    // الرئيس يشوف المشروبات الخاصة
-    presidentButtons.forEach(btn=>{
+
+if (isPresident) {
+
+    presidentButtons.forEach(btn => {
+        btn.classList.remove("hidden");
         btn.style.display = "flex";
     });
 
-}else{
+} else {
 
-    // المستخدم العادي لا يشوفها
-    presidentButtons.forEach(btn=>{
+    presidentButtons.forEach(btn => {
         btn.style.display = "none";
     });
 
